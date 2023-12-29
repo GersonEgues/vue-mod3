@@ -1,21 +1,33 @@
 <script setup lang="ts">
     import {ref,onMounted} from 'vue'
 
-    const count = ref(0)
+    let contador = 0;
 
-    function increment(value:number) {
-        count.value++;
+    function increment() {
+        contador++;
+        console.log(contador);        
+    }
+
+    function getRoles(){
+
     }
 
     onMounted(()=>{
-        console.log(`the initial count is ${count.value}`);
+        console.log(`the initial count is ${contador}`);
+        getRoles();
     });
 </script>
 
 <template>
-    <h1>holaaaa</h1>
+    <div class="card">
+        <h1>holaaaa</h1>
 
-    <button>test click</button>
+        <button type="button" 
+                class="btn btn-primary"
+                @click="increment">
+            Incrementar
+        </button>
+    </div>
 </template>
 
 <style>

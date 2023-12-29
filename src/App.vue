@@ -5,11 +5,13 @@ import User from './components/User.vue'
 </script>
 
 <template>
-  <header>
-    <h1>Titulo</h1>    
-  </header>
+  <div class="container">
+    <div class="col-12 card mt-5 mb-2">
+      <h1 class="text-center">REGISTRO DE USUARIOS</h1>
+    </div>
 
-  <User/>
+    <User/>
+  </div>
 </template>
 
 <style scoped>

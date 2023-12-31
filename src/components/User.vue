@@ -6,10 +6,49 @@
     let userRolList:any = [];
 
     let userRol:any = {};
+    
 
     function createUser() {
       console.log("create user");
       console.log(userRol);
+
+      let objectUserRol = {
+        userName   : userRol.userName,
+        password   : userRol.password,
+        email      : userRol.email,
+        createedAt : "2023-12-30 00:00:00",
+        userDetailReq : {
+          firstName : userRol.firstName, 
+          lastName  : userRol.lastName, 
+          age       : userRol.age, 
+          birthDay  : userRol.birthDay, 
+          userId    : 0, 
+        },
+        userRolReqList : [
+          {
+            userId     : 0,
+            rolId      : getRolId(userRol.nameRol),
+            active     : true,
+            createedAt : "2023-12-30 00:00:00",
+          }
+        ]
+      }
+      
+      console.log("===============");
+      console.log(objectUserRol);
+      console.log("===============");   
+      
+      createUserRest(objectUserRol);
+    }
+
+    function getRolId(name:string){
+      let rolId:number=0;
+      userRolList.forEach((rol:any) => {
+        if(rol.name == name){
+          rolId = rol.id;
+        }        
+      }); 
+      return rolId;
     }
 
     function cancelCreateUser() {
@@ -27,6 +66,17 @@
         });
     }
 
+    function createUserRest(userObject:any){
+      axios.post("http://localhost:8083/api/user/data",userObject)
+      .then(res=>{
+        console.log(res);
+        
+      })
+      .catch(err=>{
+        console.log(err);        
+      });
+    }
+
     onMounted(()=>{
         console.log(`the initial count is ${contador}`);
         getRoles();
@@ -42,7 +92,7 @@
         <input  type="text" 
                 class="form-control" 
                 id="userName"
-                v-model="userRol.userName">
+                v-model="userRol.userName"> 
       </div>
       
       <div class="mb-3">
@@ -92,19 +142,16 @@
                   class="form-control" 
                   id="birthDay"
                   v-model="userRol.birthDay">  
-        </div>
+        </div> 
       </div>
 
       <div class="mb-3">
         <label for="rol" class="form-label fw-bold">Rol</label>
-        <select class="form-select" 
-                v-model="userRol.rolId">
+        <select class="form-select"
+                v-model="userRol.nameRol">
           <option selected disabled>Seleccione un rol...</option>
-          <option>A</option>
-          <option>B</option>
-          <option>C</option>
-          <option value="rol.id" v-for="rol in userRolList">
-            {{ rol.name }}
+          <option v-for="rol in userRolList">
+            {{ rol.name }} 
           </option>
         </select>
       </div>
@@ -115,7 +162,6 @@
       </div>
     </form>     
   </div>
-</template>
-
+</template> 
 <style>
 </style>

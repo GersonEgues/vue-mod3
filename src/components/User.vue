@@ -4,8 +4,10 @@
 
     let contador = 0;
     let userRolList:any = [];
-
     let userRol:any = {};
+
+
+    let userResponseList:any[];
     
 
     function createUser() {
@@ -70,21 +72,33 @@
       axios.post("http://localhost:8083/api/user/data",userObject)
       .then(res=>{
         console.log(res);
-        
+        getUserResponse();
       })
       .catch(err=>{
         console.log(err);        
       });
     }
 
+    function getUserResponse(){
+        axios.get('http://localhost:8083/api/user/list')
+        .then(res=>{
+            userResponseList = res.data;
+            console.log(userResponseList);
+        })
+        .catch(err=>{
+            console.log(err);
+        });
+    }
+
     onMounted(()=>{
         console.log(`the initial count is ${contador}`);
         getRoles();
+        getUserResponse();
     });
 </script>
 
 <template>
-  <div class="card">
+  <div class="card mb-2">
     <label class="m-3 fw-bold text-center">DATOS DEL USUARIO</label>
     <form class="m-3" @submit.prevent>
       <div class="mb-3">
@@ -161,6 +175,28 @@
         <button class="btn btn-primary mx-1"  @click="createUser()">GUARDAR</button>
       </div>
     </form>     
+  </div>
+
+  <div class="card">
+    <label class="m-3 fw-bold text-center">LISTA DE USUARIOS</label>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="fw-bold " scope="col">Nro. </th>
+            <th class="fw-bold " scope="col">User Name</th>
+            <th class="fw-bold " scope="col">Email</th>
+          </tr>
+        </thead> 
+        <tbody>
+          <tr v-for="(user,index) in userResponseList">
+            <th scope="row">{{ index + 1 }}</th>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+          </tr>
+        </tbody>
+    </table>
+    </div>
   </div>
 </template> 
 <style>
